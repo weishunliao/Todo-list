@@ -1,0 +1,10 @@
+export const black = "#1F2D3D";
+export const error = "#FF4949";
+export const success = "#13CE66";
+export const white = "#FFFFFF";
+export const gray = `#CAD4DF`;
+export const offWhite = `#F3F2F3`;
+export const offWhiter = "#EEEEEE";
+export const panelMed = `#ffffff`;
+export const shadow = `rgba(17, 17, 17, 0.2)`;
+export const buttonOutlineGray = "#212121";
