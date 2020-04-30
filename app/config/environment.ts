@@ -3,8 +3,7 @@ const envType = process.env.node_env || "local";
 
 const staging = {
   CORS_ORIGIN_WHITELIST: ["http://localhost:3004"],
-  // TODO: replace this with your own db.
-  MONGODB_URI: `mongodb+srv://colinricardo:Mcw0hrWUWZhh23Ky@cluster0-kispm.mongodb.net/test?retryWrites=true&w=majority
+  MONGODB_URI: `mongodb+srv://chris:0000@cluster0-llwhs.mongodb.net/Boilerplate?retryWrites=true&w=majority
   `,
   SECRET: "doge",
 };
