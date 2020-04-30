@@ -9,6 +9,9 @@ import LogRocket from "logrocket";
 import getConfig from "next/config";
 import setupLogRocketReact from "logrocket-react";
 import * as Sentry from "@sentry/browser";
+import withReduxStore from "../redux/with-redux";
+import { Provider } from "react-redux";
+
 // TODO: Context Providers need to be imported here and used to wrap the app below.
 
 const { publicRuntimeConfig = {} } = getConfig() || {};
@@ -76,20 +79,21 @@ class MyApp extends App {
   }
 
   render() {
-    const { Component, pageProps } = this.props;
-
+    const { Component, pageProps, reduxStore } = this.props;
     return (
       <>
-        <Head>
-          <title>Boilerplate todo app</title>
-        </Head>
+        <Provider store={reduxStore}>
+          <Head>
+            <title>Boilerplate todo app</title>
+          </Head>
 
-        <Styler>
-          <Component {...pageProps} />
-        </Styler>
+          <Styler>
+            <Component {...pageProps} />
+          </Styler>
+        </Provider>
       </>
     );
   }
 }
 
-export default MyApp;
+export default withReduxStore(MyApp);
