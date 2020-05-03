@@ -9,10 +9,9 @@ import LogRocket from "logrocket";
 import getConfig from "next/config";
 import setupLogRocketReact from "logrocket-react";
 import * as Sentry from "@sentry/browser";
-import withReduxStore from "../redux/with-redux";
-import { Provider } from "react-redux";
-
-// TODO: Context Providers need to be imported here and used to wrap the app below.
+import cookie from "cookie";
+import { AuthProvider } from "../context/Auth";
+import Latout from "../components/Layout";
 
 const { publicRuntimeConfig = {} } = getConfig() || {};
 
@@ -37,27 +36,49 @@ if (process.browser) {
 
 const Styler = styled.div`
   .ant-btn {
-    border-radius: 16px;
+    border-radius: 4px;
   }
 
   .ant-select-selection {
     border-radius: 16px;
   }
+  .logoutBtn {
+    position: fixed !important;
+    top: 12px;
+    right: 70px;
+    color: aliceblue;
+    border-color: aliceblue;
+  }
 
-  .ant-input {
-    border-radius: 16px;
+  .logoutBtn:hover {
+    background-color: white !important;
+    color: #001529 !important;
+  }
+
+  .authTitle {
+    text-align: center;
+    margin-top: 30px;
   }
 `;
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
+    let isAuthenticated = false;
+    let token = "";
+    if (ctx.req && ctx.req.headers.cookie) {
+      const cookies = cookie.parse(ctx.req.headers.cookie);
+      token = cookies.__session;
+      isAuthenticated = typeof token !== "undefined";
+    }
+    if (isAuthenticated) {
+      ctx.token = token;
+    }
 
+    let pageProps = {};
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
-
-    return { pageProps };
+    return { pageProps, isAuthenticated, token };
   }
 
   componentDidMount() {
@@ -79,21 +100,21 @@ class MyApp extends App {
   }
 
   render() {
-    const { Component, pageProps, reduxStore } = this.props;
+    const { Component, pageProps, isAuthenticated, token } = this.props;
     return (
       <>
-        <Provider store={reduxStore}>
+        <AuthProvider isAuthenticated={isAuthenticated} token={token}>
           <Head>
             <title>Boilerplate todo app</title>
           </Head>
-
+          <Latout />
           <Styler>
             <Component {...pageProps} />
           </Styler>
-        </Provider>
+        </AuthProvider>
       </>
     );
   }
 }
 
-export default withReduxStore(MyApp);
+export default MyApp;

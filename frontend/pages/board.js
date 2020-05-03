@@ -1,74 +1,182 @@
-import { Button, Input, Divider, List, Item } from "../styles/antd";
-import { DeleteOutlined } from "@ant-design/icons";
-import {
-  handleInputChangeAction,
-  handleAddNewTaskAction,
-  handleInitialItemAction,
-  handleDeleteTaskAction,
-} from "../redux/actionCreators/boardActionCreator";
-import { connect } from "react-redux";
+import { Input, Button } from "../styles/antd";
 import axios from "axios";
+import withAuth from "../hocs/withAuth";
+import { AuthContext } from "../context/Auth";
+import Cookies from "js-cookie";
+import Router from "next/router";
+import TaskList from "../components/TaskList";
 
-class Board extends React.Component {
-  render() {
-    return (
-      <>
-        <h1>This is board</h1>
-        <Input
-          placeholder="Add something..."
-          value={this.props.inputValue}
-          onChange={this.props.handleInputChange}
-        />
-        <Button type="primary" onClick={this.props.handleAddNewTask.bind(this)}>
-          Primary
-        </Button>
-        <Divider orientation="left">In process</Divider>
-        <List
-          size="large"
-          bordered
-          dataSource={this.props.items}
-          renderItem={(item) => (
-            <List.Item key={item._id}>
-              {item.content}
-              <DeleteOutlined
-                onClick={() => {
-                  this.props.handleDeleteTask(item._id);
-                }}
-              />
-            </List.Item>
-          )}
-        />
-      </>
+const statusTable = [
+  { id: 1, type: "Not started" },
+  { id: 2, type: "In progess" },
+  { id: 3, type: "Completed" },
+  { id: 4, type: "Cancell" },
+];
+
+const Board = (props) => {
+  const [inputValue, setInputValue] = React.useState("");
+  const [tasks, setTasks] = React.useState(props.tasks);
+  const { token, setAuthentication, setToken } = React.useContext(AuthContext);
+
+  const handleAddNewTask = async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const body = {
+      content: inputValue,
+    };
+
+    const resp = await axios.post(
+      "http://localhost:5000/api/v1/board/task",
+      body,
+      config,
     );
+    if (resp.status === 200) {
+      tasks.push(resp.data);
+      setTasks(tasks);
+      setInputValue("");
+    } else {
+      alert("Something wrong");
+    }
+  };
+  const handleDeleteTask = async (taskId) => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const resp = await axios.delete(
+      "http://localhost:5000/api/v1/board/task/" + taskId,
+      config,
+    );
+    if (resp.status === 200) {
+      const newTasks = tasks.filter((task) => task._id !== taskId);
+      setTasks(newTasks);
+    } else {
+      alert("Something wrong");
+    }
+  };
+
+  const handleStatusChange = async (taskId, newStatus) => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const body = {
+      status: newStatus,
+    };
+    const resp = await axios.patch(
+      "http://localhost:5000/api/v1/board/task/" + taskId + "/status",
+      body,
+      config,
+    );
+
+    if (resp.status === 200) {
+      const updated = tasks.map((task) => {
+        if (task._id === taskId) {
+          task.status = parseInt(newStatus);
+        }
+        return task;
+      });
+
+      setTasks(updated);
+    } else {
+      alert("Something wrong");
+    }
+  };
+
+  const handlePriorityChange = async (taskId, newPriority) => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const body = {
+      priority: newPriority,
+    };
+    const resp = await axios.patch(
+      "http://localhost:5000/api/v1/board/task/" + taskId + "/priority",
+      body,
+      config,
+    );
+
+    if (resp.status === 200) {
+      const updated = tasks.map((task) => {
+        if (task._id === taskId) {
+          task.priority = newPriority;
+        }
+        return task;
+      });
+
+      setTasks(updated);
+    } else {
+      alert("Something wrong");
+    }
+  };
+
+  const handleResetPassword = () => {
+    Router.push("/reset_password");
+  };
+
+  const handleLogOut = () => {
+    setAuthentication(false);
+    setToken("");
+    Cookies.remove("__session");
+  };
+
+  return (
+    <>
+      <h1>This is board</h1>
+      <Button
+        className="logoutBtn"
+        ghost={true}
+        size="large"
+        onClick={handleLogOut}
+      >
+        Log out
+      </Button>
+      <Input
+        placeholder="Add something..."
+        value={inputValue}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+        }}
+        onPressEnter={handleAddNewTask}
+      />
+      {statusTable.map((status) => {
+        return (
+          <TaskList
+            key={status.type}
+            dataSource={tasks}
+            type={status.type}
+            typeId={status.id}
+            handleDeleteTask={handleDeleteTask}
+            handleStatusChange={handleStatusChange}
+            handlePriorityChange={handlePriorityChange}
+            statusTable={statusTable}
+          />
+        );
+      })}
+      <Button onClick={handleResetPassword}>Change password</Button>
+      <style global jsx>{``}</style>
+    </>
+  );
+};
+Board.getInitialProps = async (ctx) => {
+  let token = "";
+  if (ctx.req) {
+    token = ctx.token;
+  } else {
+    token = Cookies.get("__session");
   }
-}
-
-Board.getInitialProps = async (props) => {
-  const resp = await axios.get("http://localhost:5000/api/v1/board/tasks/all");
-  const items = resp.data.tasks;
-  props.reduxStore.dispatch(handleInitialItemAction(items));
-  return { items };
+  if (token !== "" && token !== undefined) {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const resp = await axios.get(
+      "http://localhost:5000/api/v1/board/tasks/all",
+      config,
+    );
+    const tasks = resp.data.tasks;
+    return { tasks };
+  }
+  return;
 };
 
-const mapStateToProps = (state) => {
-  return {
-    inputValue: state.boardReducer.inputValue,
-    items: state.boardReducer.items,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    handleInputChange(e) {
-      dispatch(handleInputChangeAction(e.target.value));
-    },
-    handleAddNewTask() {
-      dispatch(handleAddNewTaskAction(this.props.inputValue));
-    },
-    handleDeleteTask(index) {
-      dispatch(handleDeleteTaskAction(index));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+export default withAuth(Board);
