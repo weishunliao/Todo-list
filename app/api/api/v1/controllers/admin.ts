@@ -46,11 +46,13 @@ const resetUserPassword = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { email, newPassword } = req.body;
+  const { newPassword } = req.body;
+  // @ts-ignore
+  const { email } = req.payload;
   try {
     const user = (await User.findOne({ email }))!;
     user.setPassword(newPassword);
-
+    await user.save();
     return res.sendStatus(200);
   } catch (err) {
     logger.error("Error: ", err);

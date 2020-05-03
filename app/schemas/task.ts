@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const TaskSchema: mongoose.Schema = new mongoose.Schema({
-  userId: { type: Number, required: true },
+  userEmail: { type: String, required: true },
   content: { type: String },
-  status: { type: String },
+  status: { type: Number },
   created: { type: Date },
   deleted: { type: Date },
   priority: { type: String },
