@@ -22,6 +22,8 @@ export const statusTable = [
 
 const Board = (props) => {
   const [inputValue, setInputValue] = React.useState("");
+  const [selsect, setSelsect] = React.useState(new Set());
+  const [checked, setChecked] = React.useState(false);
   const [tasks, setTasks] = React.useState(props.tasks);
   const { token, setAuthentication, setToken } = React.useContext(AuthContext);
 
@@ -90,6 +92,22 @@ const Board = (props) => {
     Cookies.remove("__session");
   };
 
+  const handleMutiDelete = () => {
+    selsect.forEach((taskId) => {
+      handleDeleteTask(taskId);
+      delTask(taskId, token);
+    });
+    const newTasks = [];
+    for (const task of tasks) {
+      if (!selsect.has(task._id)) {
+        newTasks.push(task);
+      }
+    }
+    setTasks(newTasks);
+    setSelsect(new Set());
+    setChecked(false);
+  };
+
   return (
     <div className="addTaskBox">
       <div className="btn_wrapper">
@@ -112,7 +130,16 @@ const Board = (props) => {
           Log out
         </Button>
       </div>
-      <div style={{ width: "60%", margin: "0 auto" }}>
+      <div
+        style={{
+          width: "100%",
+          margin: "0 auto",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ width: "20%" }}></div>
         <Input
           prefix={<PlusOutlined className="site-form-item-icon" />}
           placeholder="Add new tasks and press Enter!"
@@ -123,7 +150,20 @@ const Board = (props) => {
           onPressEnter={handleAddNewTask}
           size="large"
           allowClear
+          style={{ width: "60%" }}
         />
+        <div style={{ width: "20%", textAlign: "center" }}>
+          <Button
+            style={{
+              backgroundColor: "#de123e",
+              color: "white",
+            }}
+            className={checked ? "" : "show"}
+            onClick={handleMutiDelete}
+          >
+            Delete
+          </Button>
+        </div>
       </div>
       <div id="tableHeader">
         <div id="header_task">Task</div>
@@ -145,6 +185,10 @@ const Board = (props) => {
             handleStatusChange={handleStatusChange}
             handlePriorityChange={handlePriorityChange}
             statusTable={statusTable}
+            setChecked={setChecked}
+            setSelsect={setSelsect}
+            selsect={selsect}
+            checked={checked}
           />
         );
       })}
@@ -153,9 +197,12 @@ const Board = (props) => {
           max-height: 55px;
         }
         .addTaskBox {
-          width: "80%";
-          margin: "0 auto";
-          margin-top: "30px";
+          width: 80%;
+          margin: 0 auto;
+          margin-top: 30px;
+        }
+        .show {
+          display: none;
         }
       `}</style>
     </div>

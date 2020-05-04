@@ -4,7 +4,7 @@ import { auth } from "../routes/admin";
 
 const router = express.Router();
 
-// router.get("/tasks/all", boardController.getAllTasks);
+router.get("/task/:taskId", boardController.getTask);
 router.get("/tasks/all", auth.required, boardController.getAllTasks);
 router.post("/task", auth.required, boardController.createTask);
 router.delete("/task/:taskId", auth.required, boardController.deleteTask);

@@ -22,13 +22,24 @@ const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getTask = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const task = await Task.findOne({ _id: req.params.taskId });
+    return res.status(200).json({ success: true, task: task });
+  } catch (err) {
+    logger.error("Error: ", err);
+    return errors.internalError(next);
+  }
+};
+
 const createTask = async (req: Request, res: Response, next: NextFunction) => {
   // @ts-ignore
   const { email } = req.payload;
+
   const task = new Task({
     userEmail: email,
     content: req.body.content,
-    created: new Date(),
+    created: formatDate(new Date()),
     status: 1,
     priority: "Normal",
   });
@@ -82,8 +93,30 @@ const updateTaskPriority = async (
   }
 };
 
+const formatDate = (now: Date): String => {
+  const date =
+    now.getDate() +
+    "-" +
+    (now.getMonth() + 1) +
+    "-" +
+    now.getFullYear() +
+    " " +
+    addZero(now.getHours()) +
+    ":" +
+    addZero(now.getMinutes());
+  return date;
+};
+
+const addZero = (i) => {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+};
+
 export default {
   getAllTasks,
+  getTask,
   createTask,
   deleteTask,
   updateTaskStatus,

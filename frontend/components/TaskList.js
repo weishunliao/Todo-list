@@ -1,5 +1,12 @@
 import React from "react";
-import { Divider, List, Dropdown, Button, Message } from "../styles/antd";
+import {
+  Divider,
+  List,
+  Dropdown,
+  Button,
+  Message,
+  Checkbox,
+} from "../styles/antd";
 import { PriorityMenu } from "../components/PrioiryMenu";
 import { StatusMenu } from "../components/StatusMenu";
 import { DeleteOutlined, FlagOutlined, LinkOutlined } from "@ant-design/icons";
@@ -12,6 +19,19 @@ class TaskList extends React.Component {
   onCopy = (id) => {
     navigator.clipboard.writeText("http://localhost:3004/public/task?id=" + id);
     Message.success("Link copied!");
+  };
+  handleChaeckBox = (e, id) => {
+    if (e.target.checked) {
+      this.props.selsect.add(id);
+    } else {
+      this.props.selsect.delete(id);
+    }
+    this.props.setSelsect(this.props.selsect);
+    if (this.props.selsect.size > 0) {
+      this.props.setChecked(true);
+    } else {
+      this.props.setChecked(false);
+    }
   };
 
   render() {
@@ -32,7 +52,15 @@ class TaskList extends React.Component {
           dataSource={dataSource}
           renderItem={(item) => (
             <List.Item key={item._id} style={{ display: "flex" }}>
-              {item.content}
+              <div>
+                <Checkbox
+                  style={{ marginRight: "10px " }}
+                  onChange={(e) => {
+                    this.handleChaeckBox(e, item._id);
+                  }}
+                ></Checkbox>
+                {item.content}
+              </div>
               <div>
                 <Dropdown
                   className="statusDropdown"

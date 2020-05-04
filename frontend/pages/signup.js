@@ -1,5 +1,4 @@
-import { Input, Button, Form } from "../styles/antd";
-import { notification } from "antd";
+import { Input, Button, Form, Message } from "../styles/antd";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { AuthContext } from "../context/Auth";
@@ -48,12 +47,7 @@ const SignUp = () => {
   };
 
   const openNotification = () => {
-    const args = {
-      message: "Password mismatch.",
-      description: "Please retype the password.",
-      duration: 3,
-    };
-    notification.open(args);
+    Message.info("Password mismatch, please retype the password.");
   };
 
   return (

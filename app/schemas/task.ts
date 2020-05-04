@@ -4,8 +4,8 @@ const TaskSchema: mongoose.Schema = new mongoose.Schema({
   userEmail: { type: String, required: true },
   content: { type: String },
   status: { type: Number },
-  created: { type: Date },
-  deleted: { type: Date },
+  created: { type: String },
+  deleted: { type: String },
   priority: { type: String },
 });
 

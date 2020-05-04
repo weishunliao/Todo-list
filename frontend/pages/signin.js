@@ -1,4 +1,4 @@
-import { Input, Button, Checkbox, Form } from "../styles/antd";
+import { Input, Button, Checkbox, Form, Message } from "../styles/antd";
 import Router from "next/router";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -22,7 +22,7 @@ const SignIn = (props) => {
         setToken(resp.data.user.token);
       })
       .catch(() => {
-        alert("Wrong password or name.");
+        Message.info("Wrong password or name.");
       });
   };
 
