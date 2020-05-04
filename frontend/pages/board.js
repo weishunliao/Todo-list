@@ -1,12 +1,19 @@
-import { Input, Button } from "../styles/antd";
+import { Input, Button, Message } from "../styles/antd";
 import axios from "axios";
 import withAuth from "../hocs/withAuth";
 import { AuthContext } from "../context/Auth";
 import Cookies from "js-cookie";
-import Router from "next/router";
 import TaskList from "../components/TaskList";
+import { PlusOutlined } from "@ant-design/icons";
+import Router from "next/router";
+import {
+  addNewTask,
+  delTask,
+  updateTaskStatus,
+  updateTaskPriority,
+} from "../api/index";
 
-const statusTable = [
+export const statusTable = [
   { id: 1, type: "Not started" },
   { id: 2, type: "In progess" },
   { id: 3, type: "Completed" },
@@ -19,99 +26,62 @@ const Board = (props) => {
   const { token, setAuthentication, setToken } = React.useContext(AuthContext);
 
   const handleAddNewTask = async () => {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-
-    const body = {
-      content: inputValue,
-    };
-
-    const resp = await axios.post(
-      "http://localhost:5000/api/v1/board/task",
-      body,
-      config,
-    );
-    if (resp.status === 200) {
-      tasks.push(resp.data);
-      setTasks(tasks);
-      setInputValue("");
-    } else {
-      alert("Something wrong");
+    if (inputValue === undefined || inputValue === "") {
+      Message.info({ content: "Task cannot be empity.", duration: 1 });
+      return;
     }
+    const newTask = await addNewTask(
+      {
+        content: inputValue,
+      },
+      token,
+    );
+
+    tasks.push(newTask);
+    setTasks(tasks);
+    setInputValue("");
   };
   const handleDeleteTask = async (taskId) => {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-    const resp = await axios.delete(
-      "http://localhost:5000/api/v1/board/task/" + taskId,
-      config,
-    );
-    if (resp.status === 200) {
-      const newTasks = tasks.filter((task) => task._id !== taskId);
-      setTasks(newTasks);
-    } else {
-      alert("Something wrong");
-    }
+    delTask(taskId, token);
+    const newTasks = tasks.filter((task) => task._id !== taskId);
+    setTasks(newTasks);
   };
 
   const handleStatusChange = async (taskId, newStatus) => {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-    const body = {
-      status: newStatus,
-    };
-    const resp = await axios.patch(
-      "http://localhost:5000/api/v1/board/task/" + taskId + "/status",
-      body,
-      config,
+    updateTaskStatus(
+      {
+        status: newStatus,
+      },
+      taskId,
+      token,
     );
 
-    if (resp.status === 200) {
-      const updated = tasks.map((task) => {
-        if (task._id === taskId) {
-          task.status = parseInt(newStatus);
-        }
-        return task;
-      });
+    const updated = tasks.map((task) => {
+      if (task._id === taskId) {
+        task.status = parseInt(newStatus);
+      }
+      return task;
+    });
 
-      setTasks(updated);
-    } else {
-      alert("Something wrong");
-    }
+    setTasks(updated);
   };
 
   const handlePriorityChange = async (taskId, newPriority) => {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-    const body = {
-      priority: newPriority,
-    };
-    const resp = await axios.patch(
-      "http://localhost:5000/api/v1/board/task/" + taskId + "/priority",
-      body,
-      config,
+    updateTaskPriority(
+      {
+        priority: newPriority,
+      },
+      taskId,
+      token,
     );
+    const updated = tasks.map((task) => {
+      if (task._id === taskId) {
+        task.priority = newPriority;
+      }
+      return task;
+    });
 
-    if (resp.status === 200) {
-      const updated = tasks.map((task) => {
-        if (task._id === taskId) {
-          task.priority = newPriority;
-        }
-        return task;
-      });
-
-      setTasks(updated);
-    } else {
-      alert("Something wrong");
-    }
-  };
-
-  const handleResetPassword = () => {
-    Router.push("/reset_password");
+    setTasks(updated);
   };
 
   const handleLogOut = () => {
@@ -121,24 +91,49 @@ const Board = (props) => {
   };
 
   return (
-    <>
-      <h1>This is board</h1>
-      <Button
-        className="logoutBtn"
-        ghost={true}
-        size="large"
-        onClick={handleLogOut}
-      >
-        Log out
-      </Button>
-      <Input
-        placeholder="Add something..."
-        value={inputValue}
-        onChange={(e) => {
-          setInputValue(e.target.value);
-        }}
-        onPressEnter={handleAddNewTask}
-      />
+    <div className="addTaskBox">
+      <div className="btn_wrapper">
+        <Button
+          className="btn"
+          ghost={true}
+          size="large"
+          onClick={() => {
+            Router.push("/reset_password");
+          }}
+        >
+          Reset Password
+        </Button>
+        <Button
+          className="btn"
+          ghost={true}
+          size="large"
+          onClick={handleLogOut}
+        >
+          Log out
+        </Button>
+      </div>
+      <div style={{ width: "60%", margin: "0 auto" }}>
+        <Input
+          prefix={<PlusOutlined className="site-form-item-icon" />}
+          placeholder="Add new tasks and press Enter!"
+          value={inputValue}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+          onPressEnter={handleAddNewTask}
+          size="large"
+          allowClear
+        />
+      </div>
+      <div id="tableHeader">
+        <div id="header_task">Task</div>
+        <div>
+          <div id="header_status">Status</div>
+          <div id="header_pri">Priority</div>
+          <div id="header_link">Public Link</div>
+          <div id="header_del">Delete</div>
+        </div>
+      </div>
       {statusTable.map((status) => {
         return (
           <TaskList
@@ -153,11 +148,20 @@ const Board = (props) => {
           />
         );
       })}
-      <Button onClick={handleResetPassword}>Change password</Button>
-      <style global jsx>{``}</style>
-    </>
+      <style global jsx>{`
+        .ant-input-affix-wrapper-lg {
+          max-height: 55px;
+        }
+        .addTaskBox {
+          width: "80%";
+          margin: "0 auto";
+          margin-top: "30px";
+        }
+      `}</style>
+    </div>
   );
 };
+
 Board.getInitialProps = async (ctx) => {
   let token = "";
   if (ctx.req) {

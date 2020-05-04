@@ -2,7 +2,6 @@
 // c.f. https://github.com/zeit/next-plugins/issues/282
 import "../static/empty.css";
 import Router from "next/router";
-import styled from "styled-components";
 import Head from "next/head";
 import App from "next/app";
 import LogRocket from "logrocket";
@@ -12,6 +11,7 @@ import * as Sentry from "@sentry/browser";
 import cookie from "cookie";
 import { AuthProvider } from "../context/Auth";
 import Latout from "../components/Layout";
+import { Styler } from "../components/app";
 
 const { publicRuntimeConfig = {} } = getConfig() || {};
 
@@ -20,7 +20,7 @@ const { publicRuntimeConfig = {} } = getConfig() || {};
 const LOGROCKET_PROJECT_ID = publicRuntimeConfig.LOGROCKET_PROJECT_ID;
 const SENTRY_DSN = publicRuntimeConfig.SENTRY_DSN;
 /* eslint-enable */
-
+LogRocket.init("app/id");
 Sentry.init({ dsn: SENTRY_DSN });
 
 // only initialize when in the browser
@@ -33,33 +33,6 @@ if (process.browser) {
     });
   });
 }
-
-const Styler = styled.div`
-  .ant-btn {
-    border-radius: 4px;
-  }
-
-  .ant-select-selection {
-    border-radius: 16px;
-  }
-  .logoutBtn {
-    position: fixed !important;
-    top: 12px;
-    right: 70px;
-    color: aliceblue;
-    border-color: aliceblue;
-  }
-
-  .logoutBtn:hover {
-    background-color: white !important;
-    color: #001529 !important;
-  }
-
-  .authTitle {
-    text-align: center;
-    margin-top: 30px;
-  }
-`;
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {

@@ -1,1 +1,135 @@
 @import url("https://fonts.googleapis.com/css2?family=Sanchez&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+.addTaskBox {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.publicTaskWrapper {
+  border: 2px #615c5b47 solid;
+  height: 380px;
+  margin-top: 70px;
+  border-radius: 10px;
+}
+
+.statusDropdown {
+  margin-right: 60px;
+}
+#priority_low {
+  color: #52c41a;
+  background: #f6ffed;
+  border-color: #52c41a;
+}
+
+#priority_low_btn {
+  color: #52c41a;
+}
+
+#priority_mid {
+  color: #fa8c16;
+  background: #fff7e6;
+  border-color: #ffd591;
+}
+#priority_mid_btn {
+  color: #fa8c16;
+}
+
+#priority_high {
+  color: #f5222d;
+  background: #fff1f0;
+  border-color: #f5222d;
+}
+
+#priority_high_btn {
+  color: #f5222d;
+}
+.status-btn {
+  border-radius: 5px !important ;
+  padding: 0 15px !important;
+  height: 27px !important;
+  color: white !important;
+  width: 100px;
+}
+#not_started {
+  color: rgb(252, 113, 80);
+}
+#not_started_btn {
+  background-color: rgb(252, 113, 80);
+}
+#in_progess {
+  color: rgb(81, 133, 252);
+}
+#in_progess_btn {
+  background-color: rgb(81, 133, 252);
+}
+#completed {
+  color: rgb(77, 215, 120);
+}
+#completed_btn {
+  background-color: rgb(77, 215, 120);
+}
+#cancell {
+  color: rgb(250, 169, 72);
+}
+#cancell_btn {
+  background-color: rgb(250, 169, 72);
+}
+
+#deleteLink {
+  margin: 0 40px 0 70px;
+  font-size: 16px;
+}
+
+#tableHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 24px;
+  font-family: Montserrat;
+  font-size: 14px;
+  border-bottom: 2px solid #001529;
+}
+
+#header_task {
+  margin-left: 50px;
+}
+
+#header_status {
+  display: inline-block;
+  width: 100px;
+  margin-right: 30px;
+}
+
+#header_pri {
+  display: inline-block;
+  width: 40px;
+  margin-right: 40px;
+}
+
+#header_link {
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+}
+
+#header_del {
+  display: inline-block;
+  width: 70px;
+  text-align: center;
+}
+
+.btn_wrapper {
+  position: fixed !important;
+  top: 12px;
+  right: 50px;
+}
+
+.btn {
+  color: aliceblue;
+  border-color: aliceblue;
+  margin-left: 8px;
+}
+.btn:hover {
+  background-color: white !important;
+  color: #001529 !important;
+}

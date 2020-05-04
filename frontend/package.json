@@ -60,6 +60,7 @@
     "null-loader": "^3.0.0",
     "qs": "^6.9.1",
     "react": "^16.8.6",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-datepicker": "^2.9.6",
     "react-dom": "^16.8.6",
     "react-facebook-pixel": "^0.1.3",

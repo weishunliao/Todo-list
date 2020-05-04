@@ -69,16 +69,6 @@ const SignUp = () => {
         >
           Sign in
         </Button>
-        <Button
-          className="btn"
-          ghost={true}
-          size="large"
-          onClick={() => {
-            Router.push("/reset_password");
-          }}
-        >
-          Reset Password
-        </Button>
       </div>
       <h1 className="authTitle">Register</h1>
       <Form
@@ -145,23 +135,7 @@ const SignUp = () => {
           </Button>
         </Form.Item>
       </Form>
-      <style global jsx>{`
-        .btn_wrapper {
-          position: fixed !important;
-          top: 12px;
-          right: 50px;
-        }
-
-        .btn {
-          color: aliceblue;
-          border-color: aliceblue;
-          margin-left: 8px;
-        }
-        .btn:hover {
-          background-color: white !important;
-          color: #001529 !important;
-        }
-      `}</style>
+      <style global jsx>{``}</style>
     </>
   );
 };
