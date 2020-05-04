@@ -2,7 +2,7 @@
 const envType = process.env.node_env || "local";
 
 const staging = {
-  CORS_ORIGIN_WHITELIST: ["http://localhost:3004"],
+  CORS_ORIGIN_WHITELIST: ["http://localhost:3004", "http://localhost:3000"],
   MONGODB_URI: `mongodb+srv://chris:0000@cluster0-llwhs.mongodb.net/Boilerplate?retryWrites=true&w=majority
   `,
   SECRET: "doge",
@@ -10,7 +10,7 @@ const staging = {
 
 const production = {
   ...staging,
-  CORS_ORIGIN_WHITELIST: [],
+  CORS_ORIGIN_WHITELIST: ["http://localhost:3004", "http://localhost:3000"],
 };
 
 const local = {
