@@ -24,12 +24,17 @@ This is tach task for CodeCubed. It's a full-stack web application based on Reac
 
 ### Auth system
 
+- Token based auth system, log in to get toekn and access personal task board.
+
 ![](https://github.com/weishunliao/CodeCubed-Task/blob/master/demo1.png)
 
 ### Personal board
+
+- Allow users to cahnge status, priorty and delete tasks.
 
 ![](https://github.com/weishunliao/CodeCubed-Task/blob/master/demo2.png)
 
 ### Unique public link for a task
 
-![](https://github.com/weishunliao/CodeCubed-Task/blob/master/demo3.png)
+- Click link icon to get public link for a task.
+  ![](https://github.com/weishunliao/CodeCubed-Task/blob/master/demo3.png)
