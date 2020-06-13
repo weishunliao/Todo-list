@@ -1,6 +1,6 @@
 
 
-This is a full-stack web application based on React, Express and Mongoose.
+This is a full-stack web application based on React, NextJS, Express and Mongoose.
 
 ## Requirements
 
