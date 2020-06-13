@@ -1,6 +1,6 @@
-# boilerplate
 
-This is tach task for CodeCubed. It's a full-stack web application based on React, Express and Mongoose.
+
+This is a full-stack web application based on React, Express and Mongoose.
 
 ## Requirements
 
