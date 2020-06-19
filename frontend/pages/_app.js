@@ -78,7 +78,7 @@ class MyApp extends App {
       <>
         <AuthProvider isAuthenticated={isAuthenticated} token={token}>
           <Head>
-            <title>Boilerplate todo app</title>
+            <title>ToDo</title>
           </Head>
           <Latout />
           <Styler>

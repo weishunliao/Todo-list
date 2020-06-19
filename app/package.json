@@ -7,15 +7,7 @@
     "prepare": "tsc -p .",
     "dev": "ts-node-dev --respawn --transpileOnly server.ts",
     "start": "./node_modules/nodemon/bin/nodemon.js ./build/server.js",
-    "lint": "./node_modules/tslint/bin/tslint \"**/*.ts{,x} --fix\"",
-    "deployProd": "gcloud app deploy app.prod.yaml --project=profound-coda-257623 --version=1 --version=1 --quiet",
-    "browseProd": "gcloud app browse --project=profound-coda-257623",
-    "logsProd": "gcloud app logs tail --project=profound-coda-257623",
-    "deployStaging": "gcloud app deploy app.staging.yaml --project=triple-hour-258900 --version=1 --version=1 --quiet",
-    "browseStaging": "gcloud app browse --project=triple-hour-258900",
-    "logsStaging": "gcloud app logs tail --project=triple-hour-258900",
-    "gcp-build": "tsc -p .",
-    "deployBoth": "yarn deployProd && yarn deployStaging"
+    "lint": "./node_modules/tslint/bin/tslint \"**/*.ts{,x} --fix\""
   },
   "husky": {
     "hooks": {

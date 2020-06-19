@@ -8,8 +8,7 @@
     "build": "NODE_ENV=production next build",
     "export": "next export",
     "start": "node server",
-    "lint": "./node_modules/tslint/bin/tslint \"**/*.ts{,x} --fix\"",
-    "analyze": "ANALYZE=true yarn build"
+    "lint": "./node_modules/tslint/bin/tslint \"**/*.ts{,x} --fix\""
   },
   "husky": {
     "hooks": {
