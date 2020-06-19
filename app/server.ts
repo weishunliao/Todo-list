@@ -11,7 +11,6 @@ const { CORS_ORIGIN_WHITELIST, PORT } = env;
 
 import { errorHandler } from "./api/api/v1/middleware/errorHandler";
 import errors from "./utils/errors";
-import logger, { LoggerStream } from "./utils/logger";
 
 import adminRouter from "./api/api/v1/routes/admin";
 import boardRouter from "./api/api/v1/routes/board";
@@ -21,7 +20,7 @@ const corsOptions = {
     if (CORS_ORIGIN_WHITELIST.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
-      logger.error(`${origin} is not allowed by CORS.`);
+      console.error(`${origin} is not allowed by CORS.`);
       callback(new Error(`Not allowed by CORS`));
     }
   },
@@ -31,7 +30,6 @@ const port = process.env.PORT || PORT;
 const POST_LIMIT = `50mb`;
 
 const app = express();
-app.use(morgan("combined", { stream: new LoggerStream() }));
 
 app.use(bodyParser.json({ limit: POST_LIMIT }));
 app.use(bodyParser.urlencoded({ limit: POST_LIMIT, extended: true }));
@@ -55,7 +53,7 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 app.listen(port, () => {
-  return logger.info(`APP server started on port ${port} 🎉`);
+  return console.info(`APP server started on port ${port} 🎉`);
 });
 
 export default app;

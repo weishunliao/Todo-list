@@ -3,7 +3,6 @@ import { NextFunction, Request } from "express";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } from "./statusCodes";
 
 import { CustomError } from "../interfaces";
-import logger from "./logger";
 
 // The logging for this is handled by morgan.
 const notFound = (req: Request, next: NextFunction) => {
@@ -30,7 +29,7 @@ const customError = (message: string, next: NextFunction, error?: Error) => {
 
   const err = Error(_message) as CustomError;
   err.statusCode = INTERNAL_SERVER_ERROR;
-  logger.error(`Sending custom error message: ${err.message}`);
+  console.error(`Sending custom error message: ${err.message}`);
   return next(err);
 };
 

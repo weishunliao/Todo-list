@@ -1,5 +1,4 @@
 import Task from "../../../../models/task";
-import logger from "../../../../utils/logger";
 import errors from "../../../../utils/errors";
 import { Request, Response, NextFunction } from "express";
 
@@ -17,7 +16,7 @@ const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
     const tasks = await Task.find({ userEmail: email });
     return res.status(200).json({ success: true, tasks: tasks });
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     return errors.internalError(next);
   }
 };
@@ -27,7 +26,7 @@ const getTask = async (req: Request, res: Response, next: NextFunction) => {
     const task = await Task.findOne({ _id: req.params.taskId });
     return res.status(200).json({ success: true, task: task });
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     return errors.internalError(next);
   }
 };

@@ -1,16 +1,3 @@
-enum Products {
-  Starmap = "starmap"
-}
-
-enum PrintProviders {
-  Pwinty = "pwinty"
-}
-
-enum PaymentProviders {
-  Stripe = "stripe",
-  PayPal = "paypal"
-}
-
 // NOTE: these country codes are used to pull shipping data from Pwinty.
 export enum CountryCode {
   // AF = "AF", // AFGHANISTAN
@@ -247,7 +234,7 @@ export enum CountryCode {
   // UA = "UA", // UKRAINE
   // AE = "AE", // UNITED ARAB EMIR?ATES
   GB = "GB", // UNITED KINGDOM
-  US = "US" // UNITED STATES
+  US = "US", // UNITED STATES
   // UM = "UM", // UNITED STATES MINOR OUTLYING ISLANDS
   // UY = "UY", // URUGUAY
   // UZ = "UZ", // UZBEKISTAN
@@ -265,17 +252,12 @@ export enum CountryCode {
 
 export enum ShippingSpeed {
   Standard = "standard",
-  Express = "express"
+  Express = "express",
 }
 
 export enum ShippingStatus {
   Canceled = "Cancelled", // We program in US english, Pwinty takes in UK.
-  Submitted = "Submitted"
-}
-
-export interface Design {
-  type: Products.Starmap;
-  props: {};
+  Submitted = "Submitted",
 }
 
 export interface CustomError extends Error {

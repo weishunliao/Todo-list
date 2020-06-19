@@ -4,26 +4,25 @@ import mongoose from "mongoose";
 import env from "../config/environment";
 import UserSchema, { IUser, IUserModel } from "../schemas/user";
 import dateUtils from "../utils/date";
-import logger from "../utils/logger";
 
 const { SECRET } = env;
 const PAGINATION_LIMIT = 10;
 
-const setPassword = function(this: IUser, password: string) {
+const setPassword = function (this: IUser, password: string) {
   this.salt = crypto.randomBytes(16).toString("hex");
   this.hash = crypto
     .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
     .toString("hex");
 };
 
-const validatePassword = function(this: IUser, password: string) {
+const validatePassword = function (this: IUser, password: string) {
   const hash = crypto
     .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
     .toString("hex");
   return this.hash === hash;
 };
 
-const toAuthJSON = function(this: IUser) {
+const toAuthJSON = function (this: IUser) {
   return {
     _id: this._id,
     email: this.email,
@@ -39,12 +38,12 @@ const createUser = async (email: string, password: string, role: string) => {
     await user.save();
     return user.toAuthJSON();
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     throw Error("Could not create new user.");
   }
 };
 
-const generateJWT = function(this: IUser) {
+const generateJWT = function (this: IUser) {
   const expirationDate = dateUtils.getNowPlus1Year();
 
   return sign(
@@ -61,7 +60,7 @@ const getUserById = async (id: string) => {
   try {
     return await User.findById(id);
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     throw err;
   }
 };
@@ -71,7 +70,7 @@ const searchUsers = async (searchQuery: string) => {
     const _ = new RegExp(searchQuery, "i");
     return User.find({ email: { $regex: _ } });
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     throw new Error(
       `Something went wrong when searching users for ${searchQuery}.`,
     );
@@ -92,7 +91,7 @@ const getNewUsers = async (page: number) => {
     );
     return { users: docs, total, limit, page: pageNum, pages };
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     throw new Error(`Could not get new users.`);
   }
 };

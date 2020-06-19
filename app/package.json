@@ -15,8 +15,6 @@
     }
   },
   "dependencies": {
-    "@google-cloud/logging-winston": "^2.0.1",
-    "@google-cloud/storage": "^3.0.4",
     "@sendgrid/mail": "^6.4.0",
     "@slack/webhook": "^5.0.2",
     "@types/cors": "^2.8.5",

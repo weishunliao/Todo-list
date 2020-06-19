@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import User from "../../../../models/user";
 import errors from "../../../../utils/errors";
-import logger from "../../../../utils/logger";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -23,7 +22,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     const _user = await User.createUser(email, password, role);
     return res.send({ user: _user });
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     return errors.internalError(next);
   }
 };
@@ -36,7 +35,7 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     await User.findOneAndDelete({ email });
     return res.sendStatus(200);
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     return errors.internalError(next);
   }
 };
@@ -55,7 +54,7 @@ const resetUserPassword = async (
     await user.save();
     return res.sendStatus(200);
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     return errors.internalError(next);
   }
 };
@@ -72,7 +71,7 @@ const updateUserPasswordById = async (
     await user.save();
     return res.send({ user });
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     return errors.internalError(next);
   }
 };
@@ -94,7 +93,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
       { session: false },
       (err, passportUser, info) => {
         if (err) {
-          logger.error("Error: ", err);
+          console.error("Error: ", err);
           return errors.customError("Invalid credentials.", next);
         }
 
@@ -108,7 +107,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
       },
     )(req, res, next);
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     return errors.internalError(next);
   }
 };
@@ -125,7 +124,7 @@ const current = async (req: Request, res: Response, next: NextFunction) => {
       return errors.customError("Could not find user.", next);
     }
   } catch (err) {
-    logger.error("Error: ", err);
+    console.error("Error: ", err);
     return errors.internalError(next);
   }
 };
