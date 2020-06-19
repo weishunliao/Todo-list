@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import withoutAuth from "../hocs/withoutAuth";
 import { AuthContext } from "../context/Auth";
+import config from "../config/environment";
 
 const SignIn = (props) => {
   const [email, setEmail] = React.useState("");
@@ -12,7 +13,7 @@ const SignIn = (props) => {
 
   const handleSubmit = async () => {
     await axios
-      .post("http://localhost:5000/api/v1/admin/login", {
+      .post(config.API + "/v1/admin/login", {
         email: email,
         password: password,
       })

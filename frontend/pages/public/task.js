@@ -9,6 +9,7 @@ import {
 } from "../../components/public/task";
 import { FlagOutlined, CaretRightFilled } from "@ant-design/icons";
 import axios from "axios";
+import config from "../../config/environment";
 
 const PublicTask = (props) => {
   return (
@@ -49,9 +50,7 @@ const PublicTask = (props) => {
 };
 
 PublicTask.getInitialProps = async (ctx) => {
-  const resp = await axios.get(
-    "http://localhost:5000/api/v1/board/task/" + ctx.query.id,
-  );
+  const resp = await axios.get(config.API + "/v1/board/task/" + ctx.query.id);
   if (resp.status === 200) {
     return resp.data.task;
   } else {

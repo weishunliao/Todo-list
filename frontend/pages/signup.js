@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { AuthContext } from "../context/Auth";
 import Router from "next/router";
+import config from "../config/environment";
 
 const SignUp = () => {
   const [email, setEmail] = React.useState("");
@@ -31,7 +32,7 @@ const SignUp = () => {
     }
 
     await axios
-      .post("http://localhost:5000/api/v1/admin/createUser", {
+      .post(config.API + "/v1/admin/createUser", {
         email: email,
         password: password,
         role: "private",

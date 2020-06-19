@@ -12,6 +12,7 @@ import {
   updateTaskStatus,
   updateTaskPriority,
 } from "../api/index";
+import env from "../config/environment";
 
 export const statusTable = [
   { id: 1, type: "Not started" },
@@ -220,10 +221,7 @@ Board.getInitialProps = async (ctx) => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    const resp = await axios.get(
-      "http://localhost:5000/api/v1/board/tasks/all",
-      config,
-    );
+    const resp = await axios.get(env.API + "/v1/board/tasks/all", config);
     const tasks = resp.data.tasks;
     return { tasks };
   }

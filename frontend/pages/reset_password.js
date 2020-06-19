@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { AuthContext } from "../context/Auth";
 import Router from "next/router";
+import config from "../config/environment";
 
 const ResetPassword = () => {
   const [password, setPassword] = React.useState("");
@@ -19,7 +20,7 @@ const ResetPassword = () => {
     };
     await axios
       .post(
-        "http://localhost:5000/api/v1/admin/resetUserPassword",
+        config.API + "/v1/admin/resetUserPassword",
         {
           newPassword: password,
         },

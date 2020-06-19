@@ -1,8 +1,9 @@
 import axios from "axios";
 import { Message } from "../styles/antd";
+import env from "../config/environment";
 
 const instance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: env.API,
 });
 
 export default function fetch(options) {
@@ -30,7 +31,7 @@ export default function fetch(options) {
 export const addNewTask = (body, token) => {
   return fetch({
     method: "post",
-    url: "/api/v1/board/task",
+    url: "/v1/board/task",
     data: body,
     token,
     useToken: true,
@@ -40,7 +41,7 @@ export const addNewTask = (body, token) => {
 export const delTask = (id, token) => {
   return fetch({
     method: "delete",
-    url: "api/v1/board/task/" + id,
+    url: "/v1/board/task/" + id,
     token,
     useToken: true,
   });
@@ -49,7 +50,7 @@ export const delTask = (id, token) => {
 export const updateTaskStatus = (body, id, token) => {
   return fetch({
     method: "patch",
-    url: "api/v1/board/task/" + id + "/status",
+    url: "/v1/board/task/" + id + "/status",
     token,
     data: body,
     useToken: true,
@@ -59,7 +60,7 @@ export const updateTaskStatus = (body, id, token) => {
 export const updateTaskPriority = (body, id, token) => {
   return fetch({
     method: "patch",
-    url: "api/v1/board/task/" + id + "/priority",
+    url: "/v1/board/task/" + id + "/priority",
     token,
     data: body,
     useToken: true,
