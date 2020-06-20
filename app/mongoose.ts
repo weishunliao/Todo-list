@@ -12,6 +12,7 @@ mongoose.connect(MONGODB_URI, {
   keepAlive: true,
   connectTimeoutMS: 30000,
   useFindAndModify: false,
+  useUnifiedTopology: true,
 });
 
 export default mongoose;
