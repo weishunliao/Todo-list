@@ -10,7 +10,7 @@ const production = {
 
 const local = {
   ...staging,
-  API: `http://35.202.146.170/api`,
+  API: `http://34.69.28.200/api`,
   PORT: 3000,
 };
 
