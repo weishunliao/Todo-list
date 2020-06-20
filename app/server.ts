@@ -33,7 +33,7 @@ const app = express();
 
 app.use(bodyParser.json({ limit: POST_LIMIT }));
 app.use(bodyParser.urlencoded({ limit: POST_LIMIT, extended: true }));
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(`/api/v1/admin`, adminRouter);
 app.use(`/api/v1/board`, boardRouter);
