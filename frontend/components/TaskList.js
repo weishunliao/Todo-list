@@ -18,7 +18,7 @@ class TaskList extends React.Component {
     typeId: this.props.typeId,
   };
   onCopy = (id) => {
-    navigator.clipboard.writeText("http://34.69.28.200/public/task?id=" + id);
+    navigator.clipboard.writeText("http://to-do-list.tk/public/task?id=" + id);
     Message.success("Link copied!");
   };
   handleChaeckBox = (e, id) => {
