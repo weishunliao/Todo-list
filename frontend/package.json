@@ -81,7 +81,7 @@
     "typescript": "^3.5.2",
     "tz-lookup": "^6.1.24",
     "uuid": "^3.3.2",
-    "validator": "^11.0.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
