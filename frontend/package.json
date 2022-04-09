@@ -47,7 +47,7 @@
     "logrocket-react": "^3.0.1",
     "mapbox": "^1.0.0-beta10",
     "mapbox-gl": "^1.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.26",
     "net": "^1.0.2",
     "next": "^9.0.0",
